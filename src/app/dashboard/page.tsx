@@ -25,6 +25,12 @@ export default async function DashboardPage({
   const { from, to } = rangeForPage(page, PAGE_SIZE);
 
   const supabase = await createSupabaseServerClient();
+  const { count: publishedCount } = await supabase
+    .from("posts")
+    .select("*", { count: "exact", head: true })
+    .eq("user_id", user.id)
+    .eq("status", "published");
+
   const { data: posts, count } = await supabase
     .from("posts")
     .select(
@@ -53,6 +59,27 @@ export default async function DashboardPage({
     return (
       <div className="card p-8">
         <p className="text-muted">Set a username in onboarding to manage posts.</p>
+      </div>
+    );
+  }
+
+  const hasPublishedPosts = (publishedCount ?? 0) > 0;
+
+  if (!hasPublishedPosts) {
+    return (
+      <div className="flex min-h-[calc(100vh-14rem)] flex-col items-center justify-center gap-6 px-4 py-16 text-center">
+        <h1 className="max-w-xl text-balance text-3xl font-bold tracking-tight text-foreground md:text-4xl">
+          What did you learn today?
+        </h1>
+        <p className="max-w-md text-lg leading-relaxed text-muted md:text-xl">
+          Paste your sources and we will write it for you in 60 seconds
+        </p>
+        <Link
+          href="/new"
+          className="inline-flex w-full max-w-md items-center justify-center rounded-xl bg-amber-500 px-8 py-4 text-lg font-bold text-amber-950 shadow-lg transition hover:bg-amber-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-600"
+        >
+          Create your first post
+        </Link>
       </div>
     );
   }

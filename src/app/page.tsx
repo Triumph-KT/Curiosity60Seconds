@@ -1,5 +1,7 @@
 import Link from "next/link";
 import type { Metadata } from "next";
+import { redirect } from "next/navigation";
+import { getCurrentAppUser } from "@/lib/data";
 import { absoluteUrl } from "@/lib/seo";
 
 export const metadata: Metadata = {
@@ -18,7 +20,12 @@ export const metadata: Metadata = {
   },
 };
 
-export default function Home() {
+export default async function Home() {
+  const user = await getCurrentAppUser();
+  if (user) {
+    redirect("/dashboard");
+  }
+
   return (
     <>
       <section className="mb-16 w-screen ml-[calc(50%-50vw)] bg-primary px-6 pb-24 pt-16 text-white md:pb-32 md:pt-24">

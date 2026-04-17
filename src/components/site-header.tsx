@@ -1,5 +1,6 @@
 "use client";
 
+import type { ReactNode } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -34,11 +35,14 @@ function navLinkClass(active: boolean) {
 
 export function SiteHeader({
   user,
+  publishCta,
   initialUnreadCount = 0,
   initialMessageUnreadCount = 0,
   initialPreview = [],
 }: {
   user: SiteHeaderUser | null;
+  /** Rendered between main nav links and profile/notifications (e.g. Publish Now from root layout). */
+  publishCta?: ReactNode;
   initialUnreadCount?: number;
   initialMessageUnreadCount?: number;
   initialPreview?: NotificationPreviewItem[];
@@ -147,6 +151,8 @@ export function SiteHeader({
             )}
           </div>
         </div>
+
+        {user && publishCta ? <div className="flex shrink-0 items-center">{publishCta}</div> : null}
 
         {user ? (
           <div className="flex shrink-0 items-center gap-2">

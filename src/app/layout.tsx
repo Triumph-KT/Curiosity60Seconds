@@ -147,6 +147,16 @@ export default async function RootLayout({
                 }
               : null
           }
+          publishCta={
+            user ? (
+              <Link
+                href="/new"
+                className="rounded-lg bg-amber-500 px-4 py-2.5 text-sm font-bold text-amber-950 shadow-md transition hover:bg-amber-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-200"
+              >
+                Publish Now
+              </Link>
+            ) : null
+          }
           initialUnreadCount={unreadCount ?? 0}
           initialMessageUnreadCount={initialMessageUnreadCount}
           initialPreview={preview}
